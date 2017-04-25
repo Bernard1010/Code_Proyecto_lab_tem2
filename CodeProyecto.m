@@ -53,10 +53,15 @@ frecs = data.Freq;
 frecs1=frecs';
 S7 = extract(data,'S_PARAMETERS');      %parametros S de prueba thru
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----PARAMETROS S MEDIDOS SIN ERROR----%
+data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L100.s2p');      %Se carga archivo s2p con los parametros S REALES SIN ERROR(VNA)(Agregar ruta de archivo)
+frecs = data.Freq;
+frecs1=frecs';
+S8 = extract(data,'S_PARAMETERS');      %parametros S de prueba thru
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%INICIALIZACION DE VECTORES DE ERROR
+%INICIALIZACION DE VECTORES DE TERMINOS DE ERROR
 
 %-----FORWARD-----%
 
@@ -76,11 +81,11 @@ e_22 = zeros(1,p);                         %variable-vector para cargar valores 
 e_03 = 0;                                  %e_03 es despreciable
 %-----VECTORES AUXULIARES-----%
 
-De = zeros(1,p);
-De_ = zeros(1,p);
+De = zeros(1,p);                            %Delta e
+De_ = zeros(1,p);                           %Delta e prima
 
 
-%CICLO DE CARGA DE VALORES 
+%CICLO DE CARGA DE VALORES DE TERMINOS DE ERROR
 for i=1:p                                 
 e00(i) = S1(1,1,i); 
 e11(i) = (S2(1,1,i)+S3(1,1,i)-2*e00(i))/(S2(1,1,i)-S3(1,1,i));
@@ -100,12 +105,29 @@ e_23e_01(i) = (S7(1,2,i)-e_03)*(1-e_11*e_22);
 
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%INICIALIZACION DE VECTORES DE PARAMETROS S CON ERROR
+
+S11m = zeros(1,p);
+S12m = zeros(1,p);
+S21m = zeros(1,p);
+S22m = zeros(1,p);
+Ds = zeros(1,p);                              %Delta s
+
+for i=1:p
+    
+Ds(i) = S8(1,1,i)*S8(2,2,i)-S8(1,2,i)*S8(2,1,i);
+S11m(i) = e00(i)+ (e10e01(i)*(S8(1,1,i)-e22(i)*Ds(i)))/(1-e11(i)*S8(1,1,i)-e22(i)*S8(2,2,i)+e11(i)*e22(2)*Ds(i));
+S21m(i) = e30+ (e10e32(i)*S8(2,1,i))/(1-e11(i)*S8(1,1,i)-e22(i)*S8(2,2,i)+e11(i)*e22(2)*Ds(i));     
+S22m(i) = e_33(i)+ (e_23e_32(i)*(S8(2,2,i)-e_11(i)*Ds(i)))/(1-e_11(i)*S8(1,1,i)-e_22(i)*S8(2,2,i)+e_11(i)*e_22(2)*Ds(i));
+S12m(i) = e_03+ (e_23e_01(i)*S8(2,1,i))/(1-e_11(i)*S8(1,1,i)-e_22(i)*S8(2,2,i)+e_11(i)*e_22(2)*Ds(i));
+
+end 
+
+
 %plot(frecs1,abs(A0));
 
 
 
 end
-
-
-
 
