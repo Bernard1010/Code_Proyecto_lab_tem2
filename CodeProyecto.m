@@ -8,58 +8,58 @@ p=4001;             %Cantidad de puntos de graficas del VNA
 %----MATCH1----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/snake.s2p');      %Se carga archivo s2p con los parametros S de la prueba match1(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S1 = extract(data,'S_PARAMETERS');      %parametros S de prueba match1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----OPEN1----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L50_1.s2p');      %Se carga archivo s2p con los parametros S de la prueba open1 (Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S2 = extract(data,'S_PARAMETERS');      %parametros S de prueba open1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----SHORT1----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L100.s2p');      %Se carga archivo s2p con los parametros S de la prueba short1(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S3 = extract(data,'S_PARAMETERS');      %parametros S de prueba short1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----MATCH2----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L25.s2p');      %Se carga archivo s2p con los parametros S de la prueba match2(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S4 = extract(data,'S_PARAMETERS');      %parametros S de prueba match2
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----OPEN2----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L50_1.s2p');      %Se carga archivo s2p con los parametros S de la prueba open2(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S5 = extract(data,'S_PARAMETERS');      %parametros S de prueba open2
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----SHORT2----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L100.s2p');      %Se carga archivo s2p con los parametros S de la prueba short2(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S6 = extract(data,'S_PARAMETERS');      %parametros S de prueba short2
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----THRU----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L100.s2p');      %Se carga archivo s2p con los parametros S de la prueba thru(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S7 = extract(data,'S_PARAMETERS');      %parametros S de prueba thru
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %----PARAMETROS S MEDIDOS SIN ERROR----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/L100.s2p');      %Se carga archivo s2p con los parametros S REALES SIN ERROR(VNA)(Agregar ruta de archivo)
 frecs = data.Freq;
-frecs1=frecs';
+frecs=frecs';
 S8 = extract(data,'S_PARAMETERS');      %parametros S de prueba thru
-
+SP = sparameters('C:\Users\berna\Documents\Matlabs/L100.s2p');%!!CARGAR MISMA DIRECCION QUE EN LINEA 58!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %INICIALIZACION DE VECTORES DE TERMINOS DE ERROR
 
@@ -124,10 +124,66 @@ S12m(i) = e_03+ (e_23e_01(i)*S8(2,1,i))/(1-e_11(i)*S8(1,1,i)-e_22(i)*S8(2,2,i)+e
 
 end 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%GRAFICOS DE LOS PARAMETROS S
 
-%plot(frecs1,abs(A0));
+%-----------GRAFICA DE PARAMETRO S11 CON ERROR--------%
+figure(1);
+plot(frecs,20*log10(abs(S11m)));
+grid on;   
+title('Parámetro S11 con error');
+xlabel('Frequency (Hz)');
+ylabel('Atenuación (dB)');
+
+%-----------GRAFICA DE PARAMETRO S21 CON ERROR--------%
+figure(2);
+plot(frecs,20*log10(abs(S21m)));
+grid on;   
+title('Parámetro S21 con error');
+xlabel('Frequency (Hz)');
+ylabel('Atenuación (dB)');
+
+%-----------GRAFICA DE PARAMETRO S22 CON ERROR--------%
+figure(3);
+plot(frecs,20*log10(abs(S22m)));
+grid on;   
+title('Parámetro S22 con error');
+xlabel('Frequency (Hz)');
+ylabel('Atenuación (dB)');
+
+
+%-----------GRAFICA DE PARAMETRO S12 CON ERROR--------%
+figure(4);
+plot(frecs,20*log10(abs(S21m)));
+grid on;   
+title('Parámetro S21 con error');
+xlabel('Frequency (Hz)');
+ylabel('Atenuación (dB)');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------GRAFICA DE PARAMETRO S11 SIN ERROR--------%
+figure(5);                                  
+rfplot(SP,1,1);
+title('Parametro S11');
+
+%-----------GRAFICA DE PARAMETRO S21 SIN ERROR--------%
+figure(6);                                  
+rfplot(SP,2,1);
+title('Parametro S21');
+
+%-----------GRAFICA DE PARAMETRO S22 SIN ERROR--------%
+figure(7);                                  
+rfplot(SP,2,2);
+title('Parametro S22');
+
+%-----------GRAFICA DE PARAMETRO S12 SIN ERROR--------%
+figure(8);                                  
+rfplot(SP,1,2);
+title('Parametro S12');
+
+
+
 
 
 
 end
-
