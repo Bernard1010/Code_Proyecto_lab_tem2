@@ -101,7 +101,7 @@ e22(i) = (S7(1,1,i)-e00(i))/(S7(1,1,i)*e11(i)-De(i));
 e10e32(i) = (S7(2,1,i)-e30)*(1-e11(i)*e22(i)); 
 
 De_(i) = e_33(i)*e_22(i)-e_23e_32(i);
-e_11(i) = (S7(2,2,i)-e_33(i))/(S7(2,2,i)-De_(i));
+e_11(i) = (S7(2,2,i)-e_33(i))/(S7(2,2,i)*e_22(i)-De_(i));
 e_23e_01(i) = (S7(1,2,i)-e_03)*(1-e_11(i)*e_22(i));
 
 end
@@ -144,9 +144,9 @@ end
 figure(1);
 plot(frecs,20*log10(abs(S11)));
 grid on;   
-title('Parámetro S11 con error');
+title('ParÃ¡metro S11 con error');
 xlabel('Frequency (Hz)');
-ylabel('Atenuación (dB)');
+ylabel('AtenuaciÃ³n (dB)');
 
 
 
@@ -154,27 +154,27 @@ ylabel('Atenuación (dB)');
 figure(2);
 plot(frecs,20*log10(abs(S21)));
 grid on;   
-title('Parámetro S21 con error');
+title('ParÃ¡metro S21 con error');
 xlabel('Frequency (Hz)');
-ylabel('Atenuación (dB)');
+ylabel('AtenuaciÃ³n (dB)');
 %axis([0 6e9 -10 1]);
 
 %-----------GRAFICA DE PARAMETRO S22 SIN ERROR--------%
 figure(3);
 plot(frecs,20*log10(abs(S22)));
 grid on;   
-title('Parámetro S22 con error');
+title('ParÃ¡metro S22 con error');
 xlabel('Frequency (Hz)');
-ylabel('Atenuación (dB)');
+ylabel('AtenuaciÃ³n (dB)');
 
 
 %-----------GRAFICA DE PARAMETRO S12 SIN ERROR--------%
 figure(4);
 plot(frecs,20*log10(abs(S12)));
 grid on;   
-title('Parámetro S12 con error');
+title('ParÃ¡metro S12 con error');
 xlabel('Frequency (Hz)');
-ylabel('Atenuación (dB)');
+ylabel('AtenuaciÃ³n (dB)');
 %axis([0 6e9 -10 1]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -208,7 +208,7 @@ title('Parametro S12');
 % plot(frecs,A1);
 % 
 % grid on;
-% title('Término e´23e´01');
+% title('TÃ©rmino eÂ´23eÂ´01');
 % xlabel('Frequency (Hz)');
 % ylabel('Ganancia (dB)');
 % 
@@ -222,7 +222,7 @@ title('Parametro S12');
 % 
 % figure(2)
 % plot(frecs,lonWrapped);
-% title('Fase de término e´23´01');
+% title('Fase de tÃ©rmino eÂ´23Â´01');
 % xlabel('Frequency (Hz)');
 % ylabel('Fase (rad)');
 
