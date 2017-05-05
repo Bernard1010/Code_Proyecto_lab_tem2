@@ -54,7 +54,7 @@ frecs7=frecs';
 S7 = extract(data,'S_PARAMETERS');      %parametros S de prueba thru
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%----PARAMETROS S MEDIDOS SIN ERROR----%
+%----PARAMETROS S MEDIDOS CON ERROR----%
 data = read(rfdata.data,'C:\Users\berna\Documents\Matlabs/thru.s2p');      %Se carga archivo s2p con los parametros S REALES SIN ERROR(VNA)(Agregar ruta de archivo)
 frecs = data.Freq;
 frecs=frecs';
@@ -102,7 +102,7 @@ e10e32(i) = (S7(2,1,i)-e30)*(1-e11(i)*e22(i));
 
 De_(i) = e_33(i)*e_22(i)-e_23e_32(i);
 e_11(i) = (S7(2,2,i)-e_33(i))/(S7(2,2,i)*e_22(i)-De_(i));
-e_23e_01(i) = (S7(1,2,i)-e_03)*(1-e_11(i)*e_22(i));
+e_23e_01(i) = (S7(1,2,i)-e_03)*(1-e_22(i)*e_11(i));
 
 end
 
@@ -122,17 +122,17 @@ D = zeros(1,p);                              %Delta s
 
 for i=1:p
     
-a11(i) = ((S8(1,1,i)-e00(i))/(e10e01(i)));
-a12(i) = ((S8(1,2,i)-e_03)/(e_23e_01(i)));
-a21(i) = ((S8(2,1,i)-e30)/(e10e32(i)));
-a22(i) = ((S8(2,2,i)-e_33(i))/(e_23e_32(i)));
+a11(i) = (S8(1,1,i)-e00(i))/(e10e01(i));
+a12(i) = (S8(1,2,i)-e_03)/(e_23e_01(i));
+a21(i) = (S8(2,1,i)-e30)/(e10e32(i));
+a22(i) = (S8(2,2,i)-e_33(i))/(e_23e_32(i));
 
 D(i) = (1+a11(i)*e11(i))*(1+a22(i)*e_22(i)-a21(i)*a12(i)*e22(i)*e_11(i));
 
 S11(i) = (a11(i)*(1+a22(i)*e_22(i))-(e22(i)*a21(i)*a12(i)))/D(i);
 S21(i) = (a21(i)*(1+a22(i)*(e_22(i)-e22(i))))/D(i);
 S22(i) = (a22(i)*(1+a11(i)*e11(i))-(e_11(i)*a21(i)*a12(i)))/D(i);
-S12(i) = (a12(i)*(1+a11(i)*(e11(i)-e_11(i))))/D(i);
+S12(i) = (a12(i)*(1+a11(i)*(e11(i)-e_11(i))))/D(i);                                                                                                                                                                 
 
 end 
 
@@ -144,17 +144,15 @@ end
 figure(1);
 plot(frecs,20*log10(abs(S11)));
 grid on;   
-title('Parámetro S11 con error');
+title('Parámetro S11 sin error');
 xlabel('Frequency (Hz)');
 ylabel('Atenuación (dB)');
-
-
 
 %-----------GRAFICA DE PARAMETRO S21 SIN ERROR--------%
 figure(2);
 plot(frecs,20*log10(abs(S21)));
 grid on;   
-title('Parámetro S21 con error');
+title('Parámetro S21 sin error');
 xlabel('Frequency (Hz)');
 ylabel('Atenuación (dB)');
 %axis([0 6e9 -10 1]);
@@ -163,7 +161,7 @@ ylabel('Atenuación (dB)');
 figure(3);
 plot(frecs,20*log10(abs(S22)));
 grid on;   
-title('Parámetro S22 con error');
+title('Parámetro S22 sin error');
 xlabel('Frequency (Hz)');
 ylabel('Atenuación (dB)');
 
@@ -172,28 +170,28 @@ ylabel('Atenuación (dB)');
 figure(4);
 plot(frecs,20*log10(abs(S12)));
 grid on;   
-title('Parámetro S12 con error');
+title('Parámetro S12 sin error');
 xlabel('Frequency (Hz)');
 ylabel('Atenuación (dB)');
 %axis([0 6e9 -10 1]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%-----------GRAFICA DE PARAMETRO S11 SIN ERROR--------%
+%-----------GRAFICA DE PARAMETRO S11 CON ERROR--------%
 figure(5);                                  
 rfplot(SP,1,1);
 title('Parametro S11');
 
-%-----------GRAFICA DE PARAMETRO S21 SIN ERROR--------%
+%-----------GRAFICA DE PARAMETRO S21 CON ERROR--------%
 figure(6);                                  
 rfplot(SP,2,1);
 title('Parametro S21');
 
-%-----------GRAFICA DE PARAMETRO S22 SIN ERROR--------%
+%-----------GRAFICA DE PARAMETRO S22 CON ERROR--------%
 figure(7);                                  
 rfplot(SP,2,2);
 title('Parametro S22');
 
-%-----------GRAFICA DE PARAMETRO S12 SIN ERROR--------%
+%-----------GRAFICA DE PARAMETRO S12 CON ERROR--------%
 figure(8);                                  
 rfplot(SP,1,2);
 title('Parametro S12');
